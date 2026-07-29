@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="DevPilot 開發者常用工具箱" />
+    <title>&#x6AA2;&#x6838;&#x516C;&#x5F0F; Excel &#x7522;&#x751F;&#x5668; - DevPilot</title>
+    <link rel="stylesheet" href="../../css/site.css?v=ooGmiiVvHz299BXx6lIeYXtA9QM5SumfbUszq2hXf-4" />
+    <link rel="stylesheet" href="../../css/sql-sanitizer.css?v=vO6X2Ybi1ck-TYTBfRIGqGtmV0PacdPfbMD_mz_disc" />
+    <link rel="stylesheet" href="../../css/button-feedback.css?v=QUcw4HpSJ5jxSjPflTAFF6vbI64qAHyS6RzIHUo5-HI" />
+    <link rel="stylesheet" href="../../css/sidebar-toggle.css?v=2jLFvaDU2MkVdPxO-UV0jVJqTdgrBHFSG8_GAFybfcY" />
+    <link rel="stylesheet" href="../../css/data-converter.css?v=3uLtcqj8vhIAl-CLGOXmDSFZZ-FR6X9ID_4S0s2ejnI" />
+    <link rel="stylesheet" href="../../css/change-list.css?v=AX_Dm_Bw8YYfxTeXtNr13qGPKfu6qLsCKix2N-aj3A4" />
+    <link rel="stylesheet" href="../../css/check-formula.css?v=HzomMQud-RAM4zzP-zeB1yI7shs-XEgn1QqjieoCMXs" />
+    <style>[hidden] { display: none !important; }</style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="../../">
+                <span class="brand-mark">&lt;/&gt;</span>
+                <span><strong>DevPilot</strong><small>開發者工具箱</small></span>
+            </a>
+            <button class="nav-search" type="button" data-command-open><span>搜尋工具</span><kbd>Ctrl K</kbd></button>
+            <nav class="nav-groups">
+                <section><h2>資料與文字</h2>
+                    <a href="../../Tools/Json/">JSON 格式化</a>
+                    <a href="../../Tools/Text/">文字處理</a>
+                    <a href="../../Tools/Diff/">文字 Diff</a>
+                    <a href="../../Tools/DataConverter/">JSON／YAML／XML／CSV 互轉</a>
+                    <a href="../../Tools/ChangeList/">程式異動清單產生器</a>
+                    <a href="../../Tools/CheckFormula/">檢核公式 Excel 產生器</a>
+                </section>
+                <section><h2>開發工具</h2>
+                    <a href="../../Tools/Jwt/">JWT 解碼</a>
+                    <a href="../../Tools/Regex/">Regex 測試</a>
+                    <a href="../../Tools/Timestamp/">時間戳轉換</a>
+                    <a href="../../Tools/Encoder/">編碼與雜湊</a>
+                    <a href="../../Tools/Generator/">GUID 與密碼</a>
+                </section>
+                <section><h2>資料庫</h2>
+                    <a href="../../Tools/SqlIn/">SQL IN 產生器</a>
+                    <a href="../../Tools/SqlSanitizer/">SQL 欄位清理與比對</a>
+                    <a href="../../Tools/SqlTestData/">SQL 測試資料產生器</a>
+                </section>
+                <section><h2>其他</h2><a href="../../Tools/LuckyWheel/">幸運轉盤</a></section>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button>
+                <span>資料只在瀏覽器內處理</span>
+            </div>
+        </aside>
+        <div class="main-shell">
+            <header class="topbar">
+                <button class="menu-button" type="button" data-menu-toggle aria-label="收合或展開選單" aria-expanded="true">☰</button>
+                <div class="topbar-title">&#x6AA2;&#x6838;&#x516C;&#x5F0F; Excel &#x7522;&#x751F;&#x5668;</div>
+                <div class="topbar-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button></div>
+            </header>
+            <main class="content"><div class="tool-page check-formula-tool">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">EXCEL</span>
+            <h1>檢核公式 Excel 產生器</h1>
+            <p>貼上自表與跨表檢核規格，自動整理公式並匯入 CheckTemplet.xlsx。</p>
+        </div>
+    </header>
+
+    <div class="check-template-selector">
+        <label>Excel 樣板
+            <select id="checkTemplateId">
+                <option value="EximAPI2CBC">EximAPI2CBC－完整檢核規格表</option>
+                <option value="EximAPI2Jcic">EximAPI2Jcic－TITLE 判斷 1／2＋公式</option>
+            </select>
+        </label>
+        <p id="checkTemplateDescription">輸出代號、檢核項目、關係式、特殊月份與特殊公式。</p>
+    </div>
+
+    <label class="editor-panel single check-formula-source">
+        <span id="checkInputModeLabel">貼上完整檢核規格文字</span>
+        <textarea id="checkFormulaInput" spellcheck="false" placeholder="一、自表檢核&#10;〔AI395〕1000 D&#9;放款餘額&#9;〔AI395〕1000 A＝〔AI395〕1100 A＋〔AI395〕1200 A&#10;D欄以此類推&#10;&#10;二、跨表檢核&#10;〔AI395〕1000D&#9;放款餘額&#9;〔AI395〕1000D＝〔AI330〕9999A"></textarea>
+    </label>
+    <div class="check-options">
+        <label><input id="checkNormalizeSymbols" type="checkbox" checked /> 統一括號、空白及運算符號</label>
+        <label><input id="checkExpandSimilar" type="checkbox" checked /> 自動展開「指定欄位以此類推」</label>
+    </div>
+    <p class="check-parse-hint">換行的獨立比較式會各自建立一列；連鎖比較式維持同一列；若公式在 +、-、*、/ 後換行，下一行會自動接回原公式。</p>
+    <div class="toolbar">
+        <button type="button" id="checkFormulaAnalyze">智能解析文字</button>
+        <button type="button" id="checkFormulaGenerate">匯入樣板並下載 Excel</button>
+        <button type="button" class="ghost" id="checkFormulaClear">清除</button>
+    </div>
+    <div class="status-line" id="checkFormulaStatus" role="status">等待貼上檢核規格</div>
+
+    <section id="checkFormulaPreview" class="check-formula-preview" hidden>
+        <div class="check-preview-heading">
+            <div><h2>公式預覽</h2><p>所有欄位都可以在下載前直接修改。</p></div>
+            <div class="check-counts"><span id="selfCheckCount"></span><span id="crossCheckCount"></span></div>
+        </div>
+        <h3>一、自表檢核</h3>
+        <div class="change-table-wrap">
+            <table class="check-table">
+                <thead><tr><th>代號</th><th>檢核項目</th><th>關係式</th><th>備註</th><th></th></tr></thead>
+                <tbody id="selfCheckRows"></tbody>
+            </table>
+        </div>
+        <h3>二、跨表檢核</h3>
+        <div class="change-table-wrap">
+            <table class="check-table">
+                <thead><tr><th>代號</th><th>檢核項目</th><th>關係式</th><th>特殊月份</th><th>特殊公式</th><th></th></tr></thead>
+                <tbody id="crossCheckRows"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <dialog id="checkRangeDialog" class="check-range-dialog">
+        <form method="dialog">
+            <header><div><h2>展開項目代號範圍</h2><p id="checkRangeBaseFormula"></p></div><button value="cancel" aria-label="關閉">×</button></header>
+            <label>要產生的項目代號
+                <textarea id="checkRangeValues" placeholder="1100 1101 1200 1201 1300 1301&#10;1400 1401 1500 1501 1900 1901"></textarea>
+            </label>
+            <p class="muted">可使用空白、逗號、頓號或換行分隔。生成列會插入目前公式的下一列。</p>
+            <footer><button value="cancel">取消</button><button type="button" id="checkRangeGenerate">產生並插入</button></footer>
+        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8HQHs9j_dMtBgoNpaRUkEfXIA0i01cwJBBoPp4YIpL8xn7FOAvimYL5d16ekZPXcrAnF8rKfVFxorDT29-Sgf_lGws25yZnlM3I6VHU7_KeSHNZuePMzujE5vF7XbhWnO7zwiZw69d_MY6uSeNOp74k" /></form>
+    </dialog>
+</div>
+</main>
+        </div>
+    </div>
+    <div class="command-backdrop" data-command-dialog hidden>
+        <div class="command-dialog" role="dialog" aria-modal="true" aria-label="搜尋工具">
+            <input type="search" placeholder="輸入 JSON、SQL、JWT、Diff…" data-command-input />
+            <div class="command-results" data-command-results></div>
+        </div>
+    </div>
+    <div class="toast" data-toast hidden></div>
+    <script src="../../js/zip-download.js?v=cz7Kb7LMLDEMb1IwcfipnFVrGK6IdeHJnjddMafIGjQ"></script>
+    <script src="../../js/site.js?v=F2YSsgqAZTCnhe2o6Qi2bUfCekneACbKU0rWqqBxrjg"></script>
+     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="../../js/tools-check-formula.js"></script>
+</body>
+</html>
+
+
+

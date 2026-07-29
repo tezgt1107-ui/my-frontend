@@ -1,0 +1,67 @@
+@{ ViewData["Title"] = "SQL 欄位清理與比對"; }
+<div class="tool-page sql-sanitizer">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">DATABASE</span>
+            <h1>SQL 欄位清理與比對</h1>
+            <p>上傳 SQL 後，自動移除自動編號欄位，並統一建立／更新者與時間欄位。</p>
+        </div>
+    </header>
+
+    <section class="upload-card" id="sqlDropZone">
+        <input id="sqlFile" type="file" accept=".sql,text/plain,application/sql" multiple />
+        <div>
+            <strong>選擇或拖曳多個 .sql 檔案</strong>
+            <span>檔案只在瀏覽器中處理，不會上傳至伺服器</span>
+        </div>
+    </section>
+
+    <details class="rule-panel">
+        <summary>欄位辨識規則</summary>
+        <div class="rule-grid">
+            <label>自動編號欄位
+                <input id="uidAliases" value="uid, id, identity, rowid, serialid" />
+            </label>
+            <label>建立者欄位
+                <input id="createUserAliases" value="createuser, createduser, createdby, createby, creator" />
+            </label>
+            <label>更新者欄位
+                <input id="updateUserAliases" value="updateuser, updateduser, updatedby, updateby, modifier, modifiedby" />
+            </label>
+            <label>建立時間欄位
+                <input id="createDateAliases" value="createdatetime, createddate, createtime, createdat, createat" />
+            </label>
+            <label>更新時間欄位
+                <input id="updateDateAliases" value="updatedatetime, updateddate, updatetime, updatedat, modifydatetime, modifiedat" />
+            </label>
+        </div>
+        <label class="safe-option"><input id="uidFallback" type="checkbox" checked /> 沒有 CREATE TABLE 定義時，將符合 UID／ID 名稱的欄位視為自動編號</label>
+    </details>
+
+    <label class="editor-panel single sql-source">
+        <span>SQL 內容（也可以直接貼上）</span>
+        <textarea id="sanitizeInput" spellcheck="false" placeholder="INSERT INTO [Users] ([UID], [Name], [CreateUser], [CreateDateTime]) VALUES (1, 'Amy', 'admin', '2025-01-01');"></textarea>
+    </label>
+    <div class="toolbar">
+        <button type="button" id="sanitizeRun">套用規則並比對</button>
+        <button type="button" id="sanitizeDownload">依 Table 打包 ZIP</button>
+        <button type="button" data-copy-target="#sanitizeOutput">複製完整結果</button>
+        <button type="button" class="ghost" id="sanitizeClear">清除</button>
+    </div>
+    <div class="status-line" id="sanitizeStatus" role="status">等待 SQL 檔案或內容</div>
+
+    <section class="comparison-shell" id="comparisonShell" hidden>
+        <header class="comparison-nav">
+            <button type="button" id="previousTable">← 上一個</button>
+            <div><strong id="currentTable"></strong><span id="tablePosition"></span></div>
+            <button type="button" id="nextTable">下一個 →</button>
+        </header>
+        <div class="change-chips" id="changeChips"></div>
+        <div class="compare-grid">
+            <section class="editor-panel"><span>修改前（綠色為原始值）</span><div class="diff-code" id="beforeSql"></div></section>
+            <section class="editor-panel"><span>修改後（紅色為異動值）</span><div class="diff-code" id="afterSql"></div></section>
+        </div>
+    </section>
+    <textarea id="sanitizeOutput" hidden readonly></textarea>
+</div>
+@section Scripts { <script src="~/js/tools-sql-sanitizer.js" asp-append-version="true"></script> }

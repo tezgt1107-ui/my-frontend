@@ -1,0 +1,17 @@
+@{ ViewData["Title"] = "JSON 格式化"; }
+<div class="tool-page" data-tool="json">
+    <header class="page-heading"><div><span class="eyebrow">DATA</span><h1>JSON 格式化</h1><p>格式化、壓縮 JSON，或依資料結構產生 C# Model。</p></div></header>
+    <div class="toolbar">
+        <button type="button" data-json-format>格式化</button>
+        <button type="button" data-json-minify>壓縮</button>
+        <button type="button" data-json-csharp>轉成 C#</button>
+        <button type="button" data-copy-target="#jsonOutput">複製結果</button>
+        <button type="button" class="ghost" data-clear-group="json">清除</button>
+    </div>
+    <div class="editor-grid">
+        <label class="editor-panel"><span>輸入 JSON</span><textarea id="jsonInput" spellcheck="false" placeholder='{"id":1,"name":"DevPilot"}'></textarea></label>
+        <label class="editor-panel"><span>輸出結果</span><textarea id="jsonOutput" spellcheck="false" readonly></textarea></label>
+    </div>
+    <div class="status-line" id="jsonStatus" role="status">等待輸入</div>
+</div>
+@section Scripts { <script src="~/js/tools-json.js" asp-append-version="true"></script> }

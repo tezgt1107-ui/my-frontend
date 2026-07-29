@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="DevPilot 開發者常用工具箱" />
+    <title>&#x7A0B;&#x5F0F;&#x7570;&#x52D5;&#x6E05;&#x55AE;&#x7522;&#x751F;&#x5668; - DevPilot</title>
+    <link rel="stylesheet" href="../../css/site.css?v=ooGmiiVvHz299BXx6lIeYXtA9QM5SumfbUszq2hXf-4" />
+    <link rel="stylesheet" href="../../css/sql-sanitizer.css?v=vO6X2Ybi1ck-TYTBfRIGqGtmV0PacdPfbMD_mz_disc" />
+    <link rel="stylesheet" href="../../css/button-feedback.css?v=QUcw4HpSJ5jxSjPflTAFF6vbI64qAHyS6RzIHUo5-HI" />
+    <link rel="stylesheet" href="../../css/sidebar-toggle.css?v=2jLFvaDU2MkVdPxO-UV0jVJqTdgrBHFSG8_GAFybfcY" />
+    <link rel="stylesheet" href="../../css/data-converter.css?v=3uLtcqj8vhIAl-CLGOXmDSFZZ-FR6X9ID_4S0s2ejnI" />
+    <link rel="stylesheet" href="../../css/change-list.css?v=AX_Dm_Bw8YYfxTeXtNr13qGPKfu6qLsCKix2N-aj3A4" />
+    <link rel="stylesheet" href="../../css/check-formula.css?v=HzomMQud-RAM4zzP-zeB1yI7shs-XEgn1QqjieoCMXs" />
+    <style>[hidden] { display: none !important; }</style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="../../">
+                <span class="brand-mark">&lt;/&gt;</span>
+                <span><strong>DevPilot</strong><small>開發者工具箱</small></span>
+            </a>
+            <button class="nav-search" type="button" data-command-open><span>搜尋工具</span><kbd>Ctrl K</kbd></button>
+            <nav class="nav-groups">
+                <section><h2>資料與文字</h2>
+                    <a href="../../Tools/Json/">JSON 格式化</a>
+                    <a href="../../Tools/Text/">文字處理</a>
+                    <a href="../../Tools/Diff/">文字 Diff</a>
+                    <a href="../../Tools/DataConverter/">JSON／YAML／XML／CSV 互轉</a>
+                    <a href="../../Tools/ChangeList/">程式異動清單產生器</a>
+                    <a href="../../Tools/CheckFormula/">檢核公式 Excel 產生器</a>
+                </section>
+                <section><h2>開發工具</h2>
+                    <a href="../../Tools/Jwt/">JWT 解碼</a>
+                    <a href="../../Tools/Regex/">Regex 測試</a>
+                    <a href="../../Tools/Timestamp/">時間戳轉換</a>
+                    <a href="../../Tools/Encoder/">編碼與雜湊</a>
+                    <a href="../../Tools/Generator/">GUID 與密碼</a>
+                </section>
+                <section><h2>資料庫</h2>
+                    <a href="../../Tools/SqlIn/">SQL IN 產生器</a>
+                    <a href="../../Tools/SqlSanitizer/">SQL 欄位清理與比對</a>
+                    <a href="../../Tools/SqlTestData/">SQL 測試資料產生器</a>
+                </section>
+                <section><h2>其他</h2><a href="../../Tools/LuckyWheel/">幸運轉盤</a></section>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button>
+                <span>資料只在瀏覽器內處理</span>
+            </div>
+        </aside>
+        <div class="main-shell">
+            <header class="topbar">
+                <button class="menu-button" type="button" data-menu-toggle aria-label="收合或展開選單" aria-expanded="true">☰</button>
+                <div class="topbar-title">&#x7A0B;&#x5F0F;&#x7570;&#x52D5;&#x6E05;&#x55AE;&#x7522;&#x751F;&#x5668;</div>
+                <div class="topbar-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button></div>
+            </header>
+            <main class="content"><div class="tool-page change-list-tool">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">EXCEL</span>
+            <h1>程式異動清單產生器</h1>
+            <p>貼上路徑或上傳文字／圖片，自動拆分項目、路徑與 Server，並填入 Excel 範本。</p>
+        </div>
+    </header>
+
+    <section class="upload-card" id="changeListDropZone">
+        <input id="changeListFile" type="file" accept=".txt,.log,.csv,.json,image/*,text/plain" />
+        <span class="paste-hint">支援直接在此頁面按 Ctrl+V 貼上截圖</span>
+        <div>
+            <strong>選擇或拖曳文字、清單或圖片</strong>
+            <span>圖片僅使用瀏覽器本機 OCR，不會傳送到外部服務</span>
+        </div>
+    </section>
+    <img id="changeListImagePreview" class="change-image-preview" alt="上傳圖片預覽" hidden />
+
+    <div class="change-meta-grid">
+        <label>填表人姓名（必填）<input id="changePersonName" placeholder="例如：王小明" /></label>
+        <label>過版日期<input id="changeReleaseDate" type="date" /></label>
+        <label>部門<input id="changeDepartment" placeholder="例如：軟體開發部" /></label>
+        <label>系統名稱<input id="changeSystemName" placeholder="例如：EXIM API" /></label>
+        <label>專案代號<input id="changeProjectCode" placeholder="例如：EXIM_API" /></label>
+        <label>版號<input id="changeVersion" placeholder="例如：2026.07.23.1" /></label>
+        <label>專案經理<input id="changeProjectManager" /></label>
+        <label>預設備註
+            <select id="changeDefaultRemark"><option value="&#x4FEE;&#x6539;">修改</option><option value="&#x65B0;&#x589E;">新增</option><option value="&#x522A;&#x9664;">刪除</option></select>
+        </label>
+    </div>
+
+    <label class="editor-panel single change-source">
+        <span>檔案或目錄路徑（每行一筆，也可混在一般文字中）</span>
+        <textarea id="changeListInput" spellcheck="false" placeholder="/EXIM/EXIM_API/DEV/ScheduledJobs/EximAPI2Jcic/INSDeclareReportWork/Program.cs"></textarea>
+    </label>
+    <div class="toolbar">
+        <button type="button" id="changeListAnalyze">智能解析</button>
+        <button type="button" id="changeListOcr">辨識圖片文字</button>
+        <button type="button" id="changeListGenerate">產生 Excel</button>
+        <button type="button" class="ghost" id="changeListClear">清除</button>
+    </div>
+    <div class="status-line" id="changeListStatus" role="status">等待路徑資料</div>
+
+    <section class="change-preview" id="changeListPreview" hidden>
+        <h2>匯入預覽</h2>
+        <p>產生前可以直接修改每一格內容。</p>
+        <div class="change-table-wrap">
+            <table>
+                <thead><tr><th>#</th><th>Server</th><th>項目</th><th>路徑</th><th>備註</th><th></th></tr></thead>
+                <tbody id="changeListRows"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+</main>
+        </div>
+    </div>
+    <div class="command-backdrop" data-command-dialog hidden>
+        <div class="command-dialog" role="dialog" aria-modal="true" aria-label="搜尋工具">
+            <input type="search" placeholder="輸入 JSON、SQL、JWT、Diff…" data-command-input />
+            <div class="command-results" data-command-results></div>
+        </div>
+    </div>
+    <div class="toast" data-toast hidden></div>
+    <script src="../../js/zip-download.js?v=cz7Kb7LMLDEMb1IwcfipnFVrGK6IdeHJnjddMafIGjQ"></script>
+    <script src="../../js/site.js?v=F2YSsgqAZTCnhe2o6Qi2bUfCekneACbKU0rWqqBxrjg"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="../../js/tools-change-list.js"></script>
+
+</body>
+</html>
+
+
+

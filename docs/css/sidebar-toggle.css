@@ -1,0 +1,36 @@
+.app-shell {
+  transition: grid-template-columns .22s ease;
+}
+.sidebar {
+  min-width: 0;
+  transition: opacity .16s ease, visibility .16s ease, transform .22s ease, padding .22s ease;
+}
+.menu-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 38px;
+  margin-right: 12px;
+}
+@media (min-width: 801px) {
+  .app-shell.sidebar-collapsed {
+    grid-template-columns: 0 1fr;
+  }
+  .app-shell.sidebar-collapsed .sidebar {
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    border-right-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-24px);
+    pointer-events: none;
+  }
+}
+@media (max-width: 800px) {
+  .sidebar {
+    visibility: visible;
+    opacity: 1;
+  }
+}

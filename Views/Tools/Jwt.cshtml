@@ -1,0 +1,5 @@
+@{ ViewData["Title"] = "JWT 解碼器"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">SECURITY</span><h1>JWT 解碼器</h1><p>在瀏覽器本機解析 Token；不會驗證簽章，也不會上傳內容。</p></div></header><div class="warning-box">請勿貼上仍有效的正式環境敏感 Token。</div>
+<label class="editor-panel single"><span>JWT Token</span><textarea id="jwtInput" placeholder="eyJhbGciOi..." spellcheck="false"></textarea></label><div class="toolbar"><button id="jwtDecode">解析 Token</button><button class="ghost" id="jwtClear">清除</button></div>
+<div class="editor-grid"><label class="editor-panel"><span>Header</span><textarea id="jwtHeader" readonly></textarea></label><label class="editor-panel"><span>Payload</span><textarea id="jwtPayload" readonly></textarea></label></div><div class="status-line" id="jwtStatus">等待輸入</div></div>
+@section Scripts { <script src="~/js/tools-jwt.js" asp-append-version="true"></script> }

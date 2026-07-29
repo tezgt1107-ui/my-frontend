@@ -1,0 +1,8 @@
+@{ ViewData["Title"] = "抽籤轉盤"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">UTILITY</span><h1>抽籤轉盤</h1><p>適合 Stand-up 發言順序、Code Review 分配或午餐抽選。</p></div></header>
+<div class="wheel-layout"><section class="wheel-card"><div class="wheel-pointer"></div><canvas id="wheelCanvas" width="520" height="520"></canvas><button class="spin-button" id="wheelSpin">開始抽籤</button><strong id="wheelWinner"></strong></section><section class="form-card"><h2>候選項目</h2><textarea id="wheelItems">Alice
+Bob
+Charlie
+Diana
+Eric</textarea><label><input id="wheelRemoveWinner" type="checkbox" /> 抽中後移除</label><button id="wheelUpdate">更新轉盤</button><button id="wheelShuffle">隨機排序</button><p class="muted">每行一個項目，至少需要兩項。</p></section></div></div>
+@section Scripts { <script src="~/js/tools-wheel.js" asp-append-version="true"></script> }

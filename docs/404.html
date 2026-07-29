@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="DevPilot 開發者常用工具箱" />
+    <title>&#x958B;&#x767C;&#x8005;&#x5DE5;&#x5177;&#x7BB1; - DevPilot</title>
+    <link rel="stylesheet" href="./css/site.css?v=ooGmiiVvHz299BXx6lIeYXtA9QM5SumfbUszq2hXf-4" />
+    <link rel="stylesheet" href="./css/sql-sanitizer.css?v=vO6X2Ybi1ck-TYTBfRIGqGtmV0PacdPfbMD_mz_disc" />
+    <link rel="stylesheet" href="./css/button-feedback.css?v=QUcw4HpSJ5jxSjPflTAFF6vbI64qAHyS6RzIHUo5-HI" />
+    <link rel="stylesheet" href="./css/sidebar-toggle.css?v=2jLFvaDU2MkVdPxO-UV0jVJqTdgrBHFSG8_GAFybfcY" />
+    <link rel="stylesheet" href="./css/data-converter.css?v=3uLtcqj8vhIAl-CLGOXmDSFZZ-FR6X9ID_4S0s2ejnI" />
+    <link rel="stylesheet" href="./css/change-list.css?v=AX_Dm_Bw8YYfxTeXtNr13qGPKfu6qLsCKix2N-aj3A4" />
+    <link rel="stylesheet" href="./css/check-formula.css?v=HzomMQud-RAM4zzP-zeB1yI7shs-XEgn1QqjieoCMXs" />
+    <style>[hidden] { display: none !important; }</style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="./">
+                <span class="brand-mark">&lt;/&gt;</span>
+                <span><strong>DevPilot</strong><small>開發者工具箱</small></span>
+            </a>
+            <button class="nav-search" type="button" data-command-open><span>搜尋工具</span><kbd>Ctrl K</kbd></button>
+            <nav class="nav-groups">
+                <section><h2>資料與文字</h2>
+                    <a href="./Tools/Json/">JSON 格式化</a>
+                    <a href="./Tools/Text/">文字處理</a>
+                    <a href="./Tools/Diff/">文字 Diff</a>
+                    <a href="./Tools/DataConverter/">JSON／YAML／XML／CSV 互轉</a>
+                    <a href="./Tools/ChangeList/">程式異動清單產生器</a>
+                    <a href="./Tools/CheckFormula/">檢核公式 Excel 產生器</a>
+                </section>
+                <section><h2>開發工具</h2>
+                    <a href="./Tools/Jwt/">JWT 解碼</a>
+                    <a href="./Tools/Regex/">Regex 測試</a>
+                    <a href="./Tools/Timestamp/">時間戳轉換</a>
+                    <a href="./Tools/Encoder/">編碼與雜湊</a>
+                    <a href="./Tools/Generator/">GUID 與密碼</a>
+                </section>
+                <section><h2>資料庫</h2>
+                    <a href="./Tools/SqlIn/">SQL IN 產生器</a>
+                    <a href="./Tools/SqlSanitizer/">SQL 欄位清理與比對</a>
+                    <a href="./Tools/SqlTestData/">SQL 測試資料產生器</a>
+                </section>
+                <section><h2>其他</h2><a href="./Tools/LuckyWheel/">幸運轉盤</a></section>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button>
+                <span>資料只在瀏覽器內處理</span>
+            </div>
+        </aside>
+        <div class="main-shell">
+            <header class="topbar">
+                <button class="menu-button" type="button" data-menu-toggle aria-label="收合或展開選單" aria-expanded="true">☰</button>
+                <div class="topbar-title">&#x958B;&#x767C;&#x8005;&#x5DE5;&#x5177;&#x7BB1;</div>
+                <div class="topbar-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button></div>
+            </header>
+            <main class="content"><section class="hero">
+    <div>
+        <span class="eyebrow">DEVELOPER WORKBENCH</span>
+        <h1>常用開發工具<br />集中在一個地方</h1>
+        <p>JSON、SQL、JWT、Regex、編碼與文字處理，所有資料都只在你的瀏覽器中運算。</p>
+        <div class="hero-actions">
+            <button class="primary-button" type="button" data-command-open>搜尋工具 <kbd>Ctrl K</kbd></button>
+            <a class="secondary-button" href="./Tools/Json/">開啟 JSON 格式化</a>
+        </div>
+    </div>
+    <div class="hero-console" aria-label="DevPilot 功能示意">
+        <div class="console-bar"><i></i><i></i><i></i><span>devpilot.local</span></div>
+        <pre><code><span class="muted">// 資料不會離開你的瀏覽器</span>
+{
+  <span class="accent">"tool"</span>: <span class="success">"json-formatter"</span>,
+  <span class="accent">"privacy"</span>: <span class="success">"browser-only"</span>,
+  <span class="accent">"status"</span>: <span class="success">"ready"</span>
+}</code></pre>
+    </div>
+</section>
+
+<section class="section-heading">
+    <div><span class="eyebrow">QUICK ACCESS</span><h2>常用工具</h2></div>
+    <p>選擇工具後直接貼上內容即可使用，不需上傳檔案。</p>
+</section>
+<div class="tool-grid">
+    <a class="tool-card featured" href="./Tools/Json/"><span class="tool-icon">{ }</span><div><h3>JSON 格式化</h3><p>格式化、壓縮並產生 C# Model。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/SqlIn/"><span class="tool-icon">SQL</span><div><h3>SQL IN 產生器</h3><p>將多行資料轉成安全的 IN 條件。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/Jwt/"><span class="tool-icon">JWT</span><div><h3>JWT 解碼</h3><p>查看 Header、Payload 與到期時間。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/Text/"><span class="tool-icon">Aa</span><div><h3>文字處理</h3><p>排序、去重與命名格式轉換。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/Timestamp/"><span class="tool-icon">⏱</span><div><h3>時間戳轉換</h3><p>Unix、ISO 與 UTC 時間互轉。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/Regex/"><span class="tool-icon">.*</span><div><h3>Regex 測試</h3><p>即時查看符合項目與取代結果。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/Diff/"><span class="tool-icon">±</span><div><h3>文字 Diff</h3><p>逐行比較兩份文字內容。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" href="./Tools/Generator/"><span class="tool-icon">#</span><div><h3>GUID 與密碼</h3><p>產生 GUID 和安全隨機密碼。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" href="./Tools/SqlSanitizer/"><span class="tool-icon">⇄</span><div><h3>SQL 欄位清理</h3><p>移除 UID、統一稽核欄位並逐表比對。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" href="./Tools/SqlTestData/"><span class="tool-icon">＋</span><div><h3>SQL 測試資料</h3><p>從 INSERT 範例自動產生多筆測試資料。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" href="./Tools/DataConverter/"><span class="tool-icon">⇆</span><div><h3>資料格式互轉</h3><p>JSON、YAML、XML、CSV 雙向轉換。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" href="./Tools/ChangeList/"><span class="tool-icon">XL</span><div><h3>程式異動清單</h3><p>從文字或圖片整理路徑並填入 Excel 範本。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" href="./Tools/CheckFormula/"><span class="tool-icon">fx</span><div><h3>檢核公式 Excel</h3><p>貼上檢核規格，自動展開指定欄位公式並匯入樣板。</p></div><span class="arrow">→</span></a>
+</div>
+<section class="privacy-banner"><span>🔒</span><div><h3>Local-first 隱私設計</h3><p>貼上的資料只在瀏覽器內處理，不會傳送至伺服器。</p></div></section>
+</main>
+        </div>
+    </div>
+    <div class="command-backdrop" data-command-dialog hidden>
+        <div class="command-dialog" role="dialog" aria-modal="true" aria-label="搜尋工具">
+            <input type="search" placeholder="輸入 JSON、SQL、JWT、Diff…" data-command-input />
+            <div class="command-results" data-command-results></div>
+        </div>
+    </div>
+    <div class="toast" data-toast hidden></div>
+    <script src="../../js/zip-download.js?v=cz7Kb7LMLDEMb1IwcfipnFVrGK6IdeHJnjddMafIGjQ"></script>
+    <script src="../../js/site.js?v=F2YSsgqAZTCnhe2o6Qi2bUfCekneACbKU0rWqqBxrjg"></script>
+    
+</body>
+</html>
+
+

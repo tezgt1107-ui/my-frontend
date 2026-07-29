@@ -1,0 +1,54 @@
+@{ ViewData["Title"] = "SQL 測試資料產生器"; }
+<div class="tool-page sql-test-data">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">DATABASE</span>
+            <h1>SQL 測試資料產生器</h1>
+            <p>貼上或上傳 INSERT 範例，依欄位名稱與原始值型別產生測試資料。</p>
+        </div>
+    </header>
+
+    <section class="upload-card" id="testDataDropZone">
+        <input id="testDataFile" type="file" accept=".sql,text/plain,application/sql" multiple />
+        <div>
+            <strong>選擇或拖曳 INSERT SQL</strong>
+            <span>可同時上傳多份檔案，資料只在瀏覽器中處理</span>
+        </div>
+    </section>
+
+    <div class="option-bar test-data-options">
+        <label>每段 INSERT 產生筆數
+            <input id="testDataCount" type="number" min="1" max="1000" value="10" />
+        </label>
+        <label>流水號起始值
+            <input id="testDataStart" type="number" min="1" value="1" />
+        </label>
+        <label><input id="testDataKeepNull" type="checkbox" checked /> 保留 NULL</label>
+        <label><input id="testDataUseGetDate" type="checkbox" checked /> 日期欄位使用 GETDATE()</label>
+    </div>
+
+    <label class="editor-panel single sql-source">
+        <span>INSERT 範例</span>
+        <textarea id="testDataInput" spellcheck="false" placeholder="INSERT INTO [Users] ([UID], [Name], [Email], [IsActive], [CreateDateTime]) VALUES (1, 'Amy', 'amy@example.com', 1, GETDATE());"></textarea>
+    </label>
+    <div class="toolbar">
+        <button type="button" id="testDataGenerate">產生測試 INSERT</button>
+        <button type="button" id="testDataDownload">依 Table 打包 ZIP</button>
+        <button type="button" data-copy-target="#testDataOutput">複製結果</button>
+        <button type="button" class="ghost" id="testDataClear">清除</button>
+    </div>
+    <div class="status-line" id="testDataStatus" role="status">等待 INSERT 範例</div>
+
+    <section class="comparison-shell" id="testDataResult" hidden>
+        <header class="comparison-nav">
+            <button type="button" id="testDataPrevious">← 上一個</button>
+            <div><strong id="testDataTable"></strong><span id="testDataPosition"></span></div>
+            <button type="button" id="testDataNext">下一個 →</button>
+        </header>
+        <label class="editor-panel test-data-output">
+            <span>產生結果</span>
+            <textarea id="testDataOutput" spellcheck="false" readonly></textarea>
+        </label>
+    </section>
+</div>
+@section Scripts { <script src="~/js/tools-sql-test-data.js" asp-append-version="true"></script> }

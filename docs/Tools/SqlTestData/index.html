@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="DevPilot 開發者常用工具箱" />
+    <title>SQL &#x6E2C;&#x8A66;&#x8CC7;&#x6599;&#x7522;&#x751F;&#x5668; - DevPilot</title>
+    <link rel="stylesheet" href="../../css/site.css?v=ooGmiiVvHz299BXx6lIeYXtA9QM5SumfbUszq2hXf-4" />
+    <link rel="stylesheet" href="../../css/sql-sanitizer.css?v=vO6X2Ybi1ck-TYTBfRIGqGtmV0PacdPfbMD_mz_disc" />
+    <link rel="stylesheet" href="../../css/button-feedback.css?v=QUcw4HpSJ5jxSjPflTAFF6vbI64qAHyS6RzIHUo5-HI" />
+    <link rel="stylesheet" href="../../css/sidebar-toggle.css?v=2jLFvaDU2MkVdPxO-UV0jVJqTdgrBHFSG8_GAFybfcY" />
+    <link rel="stylesheet" href="../../css/data-converter.css?v=3uLtcqj8vhIAl-CLGOXmDSFZZ-FR6X9ID_4S0s2ejnI" />
+    <link rel="stylesheet" href="../../css/change-list.css?v=AX_Dm_Bw8YYfxTeXtNr13qGPKfu6qLsCKix2N-aj3A4" />
+    <link rel="stylesheet" href="../../css/check-formula.css?v=HzomMQud-RAM4zzP-zeB1yI7shs-XEgn1QqjieoCMXs" />
+    <style>[hidden] { display: none !important; }</style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="../../">
+                <span class="brand-mark">&lt;/&gt;</span>
+                <span><strong>DevPilot</strong><small>開發者工具箱</small></span>
+            </a>
+            <button class="nav-search" type="button" data-command-open><span>搜尋工具</span><kbd>Ctrl K</kbd></button>
+            <nav class="nav-groups">
+                <section><h2>資料與文字</h2>
+                    <a href="../../Tools/Json/">JSON 格式化</a>
+                    <a href="../../Tools/Text/">文字處理</a>
+                    <a href="../../Tools/Diff/">文字 Diff</a>
+                    <a href="../../Tools/DataConverter/">JSON／YAML／XML／CSV 互轉</a>
+                    <a href="../../Tools/ChangeList/">程式異動清單產生器</a>
+                    <a href="../../Tools/CheckFormula/">檢核公式 Excel 產生器</a>
+                </section>
+                <section><h2>開發工具</h2>
+                    <a href="../../Tools/Jwt/">JWT 解碼</a>
+                    <a href="../../Tools/Regex/">Regex 測試</a>
+                    <a href="../../Tools/Timestamp/">時間戳轉換</a>
+                    <a href="../../Tools/Encoder/">編碼與雜湊</a>
+                    <a href="../../Tools/Generator/">GUID 與密碼</a>
+                </section>
+                <section><h2>資料庫</h2>
+                    <a href="../../Tools/SqlIn/">SQL IN 產生器</a>
+                    <a href="../../Tools/SqlSanitizer/">SQL 欄位清理與比對</a>
+                    <a href="../../Tools/SqlTestData/">SQL 測試資料產生器</a>
+                </section>
+                <section><h2>其他</h2><a href="../../Tools/LuckyWheel/">幸運轉盤</a></section>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button>
+                <span>資料只在瀏覽器內處理</span>
+            </div>
+        </aside>
+        <div class="main-shell">
+            <header class="topbar">
+                <button class="menu-button" type="button" data-menu-toggle aria-label="收合或展開選單" aria-expanded="true">☰</button>
+                <div class="topbar-title">SQL &#x6E2C;&#x8A66;&#x8CC7;&#x6599;&#x7522;&#x751F;&#x5668;</div>
+                <div class="topbar-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button></div>
+            </header>
+            <main class="content"><div class="tool-page sql-test-data">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">DATABASE</span>
+            <h1>SQL 測試資料產生器</h1>
+            <p>貼上或上傳 INSERT 範例，依欄位名稱與原始值型別產生測試資料。</p>
+        </div>
+    </header>
+
+    <section class="upload-card" id="testDataDropZone">
+        <input id="testDataFile" type="file" accept=".sql,text/plain,application/sql" multiple />
+        <div>
+            <strong>選擇或拖曳 INSERT SQL</strong>
+            <span>可同時上傳多份檔案，資料只在瀏覽器中處理</span>
+        </div>
+    </section>
+
+    <div class="option-bar test-data-options">
+        <label>每段 INSERT 產生筆數
+            <input id="testDataCount" type="number" min="1" max="1000" value="10" />
+        </label>
+        <label>流水號起始值
+            <input id="testDataStart" type="number" min="1" value="1" />
+        </label>
+        <label><input id="testDataKeepNull" type="checkbox" checked /> 保留 NULL</label>
+        <label><input id="testDataUseGetDate" type="checkbox" checked /> 日期欄位使用 GETDATE()</label>
+    </div>
+
+    <label class="editor-panel single sql-source">
+        <span>INSERT 範例</span>
+        <textarea id="testDataInput" spellcheck="false" placeholder="INSERT INTO [Users] ([UID], [Name], [Email], [IsActive], [CreateDateTime]) VALUES (1, 'Amy', 'amy@example.com', 1, GETDATE());"></textarea>
+    </label>
+    <div class="toolbar">
+        <button type="button" id="testDataGenerate">產生測試 INSERT</button>
+        <button type="button" id="testDataDownload">依 Table 打包 ZIP</button>
+        <button type="button" data-copy-target="#testDataOutput">複製結果</button>
+        <button type="button" class="ghost" id="testDataClear">清除</button>
+    </div>
+    <div class="status-line" id="testDataStatus" role="status">等待 INSERT 範例</div>
+
+    <section class="comparison-shell" id="testDataResult" hidden>
+        <header class="comparison-nav">
+            <button type="button" id="testDataPrevious">← 上一個</button>
+            <div><strong id="testDataTable"></strong><span id="testDataPosition"></span></div>
+            <button type="button" id="testDataNext">下一個 →</button>
+        </header>
+        <label class="editor-panel test-data-output">
+            <span>產生結果</span>
+            <textarea id="testDataOutput" spellcheck="false" readonly></textarea>
+        </label>
+    </section>
+</div>
+</main>
+        </div>
+    </div>
+    <div class="command-backdrop" data-command-dialog hidden>
+        <div class="command-dialog" role="dialog" aria-modal="true" aria-label="搜尋工具">
+            <input type="search" placeholder="輸入 JSON、SQL、JWT、Diff…" data-command-input />
+            <div class="command-results" data-command-results></div>
+        </div>
+    </div>
+    <div class="toast" data-toast hidden></div>
+    <script src="../../js/zip-download.js?v=cz7Kb7LMLDEMb1IwcfipnFVrGK6IdeHJnjddMafIGjQ"></script>
+    <script src="../../js/site.js?v=F2YSsgqAZTCnhe2o6Qi2bUfCekneACbKU0rWqqBxrjg"></script>
+     <script src="../../js/tools-sql-test-data.js?v=y-SY7B7Iw_8KGn7CWNpgXvvhm9V4ZajiAO2ZT8A7Flk"></script> 
+</body>
+</html>
+
+
+

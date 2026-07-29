@@ -1,0 +1,5 @@
+@{ ViewData["Title"] = "文字 Diff"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">COMPARE</span><h1>文字 Diff</h1><p>逐行比較設定檔、SQL、Log 或程式碼。</p></div></header>
+<div class="option-bar"><label><input id="diffIgnoreWhitespace" type="checkbox" /> 忽略前後空白</label><label><input id="diffIgnoreCase" type="checkbox" /> 忽略大小寫</label><button id="diffCompare">開始比較</button></div>
+<div class="editor-grid"><label class="editor-panel"><span>左側版本</span><textarea id="diffLeft"></textarea></label><label class="editor-panel"><span>右側版本</span><textarea id="diffRight"></textarea></label></div><div class="diff-output" id="diffOutput"></div></div>
+@section Scripts { <script src="~/js/tools-diff.js" asp-append-version="true"></script> }

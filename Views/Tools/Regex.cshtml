@@ -1,0 +1,5 @@
+@{ ViewData["Title"] = "Regex 實驗室"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">REGEX</span><h1>Regex 實驗室</h1><p>即時測試正規表示式、旗標、群組與取代結果。</p></div></header>
+<div class="regex-bar"><label>Expression<input id="regexPattern" value="(?&lt;level&gt;ERROR|WARN)" /></label><label>Flags<input id="regexFlags" value="gim" /></label><label>Replace<input id="regexReplacement" placeholder="$& 或 $1" /></label></div>
+<div class="editor-grid"><label class="editor-panel"><span>測試文字</span><textarea id="regexInput" placeholder="2026-07-23 ERROR Something failed"></textarea></label><div class="editor-panel"><span>比對結果</span><div class="regex-results" id="regexResults"></div></div></div><label class="editor-panel single"><span>取代預覽</span><textarea id="regexReplaceOutput" readonly></textarea></label><div class="status-line" id="regexStatus">0 個符合項目</div></div>
+@section Scripts { <script src="~/js/tools-regex.js" asp-append-version="true"></script> }

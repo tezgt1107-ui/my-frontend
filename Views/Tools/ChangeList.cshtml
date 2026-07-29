@@ -1,0 +1,61 @@
+@{ ViewData["Title"] = "程式異動清單產生器"; }
+<div class="tool-page change-list-tool">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">EXCEL</span>
+            <h1>程式異動清單產生器</h1>
+            <p>貼上路徑或上傳文字／圖片，自動拆分項目、路徑與 Server，並填入 Excel 範本。</p>
+        </div>
+    </header>
+
+    <section class="upload-card" id="changeListDropZone">
+        <input id="changeListFile" type="file" accept=".txt,.log,.csv,.json,image/*,text/plain" />
+        <span class="paste-hint">支援直接在此頁面按 Ctrl+V 貼上截圖</span>
+        <div>
+            <strong>選擇或拖曳文字、清單或圖片</strong>
+            <span>圖片僅使用瀏覽器本機 OCR，不會傳送到外部服務</span>
+        </div>
+    </section>
+    <img id="changeListImagePreview" class="change-image-preview" alt="上傳圖片預覽" hidden />
+
+    <div class="change-meta-grid">
+        <label>填表人姓名（必填）<input id="changePersonName" placeholder="例如：王小明" /></label>
+        <label>過版日期<input id="changeReleaseDate" type="date" /></label>
+        <label>部門<input id="changeDepartment" placeholder="例如：軟體開發部" /></label>
+        <label>系統名稱<input id="changeSystemName" placeholder="例如：EXIM API" /></label>
+        <label>專案代號<input id="changeProjectCode" placeholder="例如：EXIM_API" /></label>
+        <label>版號<input id="changeVersion" placeholder="例如：2026.07.23.1" /></label>
+        <label>專案經理<input id="changeProjectManager" /></label>
+        <label>預設備註
+            <select id="changeDefaultRemark"><option value="修改">修改</option><option value="新增">新增</option><option value="刪除">刪除</option></select>
+        </label>
+    </div>
+
+    <label class="editor-panel single change-source">
+        <span>檔案或目錄路徑（每行一筆，也可混在一般文字中）</span>
+        <textarea id="changeListInput" spellcheck="false" placeholder="/EXIM/EXIM_API/DEV/ScheduledJobs/EximAPI2Jcic/INSDeclareReportWork/Program.cs"></textarea>
+    </label>
+    <div class="toolbar">
+        <button type="button" id="changeListAnalyze">智能解析</button>
+        <button type="button" id="changeListOcr">辨識圖片文字</button>
+        <button type="button" id="changeListGenerate">產生 Excel</button>
+        <button type="button" class="ghost" id="changeListClear">清除</button>
+    </div>
+    <div class="status-line" id="changeListStatus" role="status">等待路徑資料</div>
+
+    <section class="change-preview" id="changeListPreview" hidden>
+        <h2>匯入預覽</h2>
+        <p>產生前可以直接修改每一格內容。</p>
+        <div class="change-table-wrap">
+            <table>
+                <thead><tr><th>#</th><th>Server</th><th>項目</th><th>路徑</th><th>備註</th><th></th></tr></thead>
+                <tbody id="changeListRows"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="~/js/tools-change-list.js" asp-append-version="true"></script>
+}

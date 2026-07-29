@@ -1,0 +1,18 @@
+.converter-controls {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr) minmax(180px, 1fr);
+  align-items: end;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.converter-controls label { display: flex; flex-direction: column; gap: 7px; color: var(--muted); font-size: .86rem; }
+.converter-controls select, .converter-controls input { width: 100%; }
+.converter-controls button { height: 40px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-2); color: var(--text); }
+@media (max-width: 800px) {
+  .converter-controls { grid-template-columns: 1fr; }
+  .converter-controls button { width: 100%; }
+}

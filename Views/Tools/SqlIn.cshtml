@@ -1,0 +1,6 @@
+@{ ViewData["Title"] = "SQL IN 產生器"; }
+<div class="tool-page" data-tool="sqlin"><header class="page-heading"><div><span class="eyebrow">DATABASE</span><h1>SQL IN 產生器</h1><p>把 Excel 欄位或多行資料快速轉成安全、易讀的 SQL 條件。</p></div></header>
+<div class="option-bar"><label>資料型別<select id="sqlType"><option value="string">字串</option><option value="number">數字</option><option value="guid">GUID</option></select></label><label><input id="sqlDistinct" type="checkbox" checked /> 去除重複</label><label><input id="sqlSort" type="checkbox" /> 排序</label><label>每行筆數<input id="sqlPerLine" type="number" min="1" max="50" value="5" /></label></div>
+<div class="toolbar"><button id="sqlGenerate">產生 SQL IN</button><button data-copy-target="#sqlOutput">複製結果</button><button class="ghost" data-clear-group="sql">清除</button></div>
+<div class="editor-grid"><label class="editor-panel"><span>輸入（換行、逗號或 Tab 分隔）</span><textarea id="sqlInput" placeholder="A001&#10;A002&#10;A003"></textarea></label><label class="editor-panel"><span>SQL</span><textarea id="sqlOutput" readonly></textarea></label></div><div class="status-line" id="sqlStatus">0 筆資料</div></div>
+@section Scripts { <script src="~/js/tools-sqlin.js" asp-append-version="true"></script> }

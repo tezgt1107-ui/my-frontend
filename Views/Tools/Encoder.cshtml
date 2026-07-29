@@ -1,0 +1,5 @@
+@{ ViewData["Title"] = "編碼與雜湊"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">ENCODING</span><h1>編碼與雜湊</h1><p>Base64、URL 編碼與 SHA-256。Base64 是編碼，不是加密。</p></div></header>
+<div class="toolbar"><button id="base64Encode">Base64 編碼</button><button id="base64Decode">Base64 解碼</button><button id="urlEncode">URL 編碼</button><button id="urlDecode">URL 解碼</button><button id="sha256">SHA-256</button><button data-copy-target="#encodeOutput">複製</button></div>
+<div class="editor-grid"><label class="editor-panel"><span>輸入</span><textarea id="encodeInput"></textarea></label><label class="editor-panel"><span>輸出</span><textarea id="encodeOutput" readonly></textarea></label></div><div class="status-line" id="encodeStatus">等待輸入</div></div>
+@section Scripts { <script src="~/js/tools-encoder.js" asp-append-version="true"></script> }

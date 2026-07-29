@@ -1,0 +1,69 @@
+@{ ViewData["Title"] = "檢核公式 Excel 產生器"; }
+<div class="tool-page check-formula-tool">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">EXCEL</span>
+            <h1>檢核公式 Excel 產生器</h1>
+            <p>貼上自表與跨表檢核規格，自動整理公式並匯入 CheckTemplet.xlsx。</p>
+        </div>
+    </header>
+
+    <div class="check-template-selector">
+        <label>Excel 樣板
+            <select id="checkTemplateId">
+                <option value="EximAPI2CBC">EximAPI2CBC－完整檢核規格表</option>
+                <option value="EximAPI2Jcic">EximAPI2Jcic－TITLE 判斷 1／2＋公式</option>
+            </select>
+        </label>
+        <p id="checkTemplateDescription">輸出代號、檢核項目、關係式、特殊月份與特殊公式。</p>
+    </div>
+
+    <label class="editor-panel single check-formula-source">
+        <span id="checkInputModeLabel">貼上完整檢核規格文字</span>
+        <textarea id="checkFormulaInput" spellcheck="false" placeholder="一、自表檢核&#10;〔AI395〕1000 D&#9;放款餘額&#9;〔AI395〕1000 A＝〔AI395〕1100 A＋〔AI395〕1200 A&#10;D欄以此類推&#10;&#10;二、跨表檢核&#10;〔AI395〕1000D&#9;放款餘額&#9;〔AI395〕1000D＝〔AI330〕9999A"></textarea>
+    </label>
+    <div class="check-options">
+        <label><input id="checkNormalizeSymbols" type="checkbox" checked /> 統一括號、空白及運算符號</label>
+        <label><input id="checkExpandSimilar" type="checkbox" checked /> 自動展開「指定欄位以此類推」</label>
+    </div>
+    <p class="check-parse-hint">換行的獨立比較式會各自建立一列；連鎖比較式維持同一列；若公式在 +、-、*、/ 後換行，下一行會自動接回原公式。</p>
+    <div class="toolbar">
+        <button type="button" id="checkFormulaAnalyze">智能解析文字</button>
+        <button type="button" id="checkFormulaGenerate">匯入樣板並下載 Excel</button>
+        <button type="button" class="ghost" id="checkFormulaClear">清除</button>
+    </div>
+    <div class="status-line" id="checkFormulaStatus" role="status">等待貼上檢核規格</div>
+
+    <section id="checkFormulaPreview" class="check-formula-preview" hidden>
+        <div class="check-preview-heading">
+            <div><h2>公式預覽</h2><p>所有欄位都可以在下載前直接修改。</p></div>
+            <div class="check-counts"><span id="selfCheckCount"></span><span id="crossCheckCount"></span></div>
+        </div>
+        <h3>一、自表檢核</h3>
+        <div class="change-table-wrap">
+            <table class="check-table">
+                <thead><tr><th>代號</th><th>檢核項目</th><th>關係式</th><th>備註</th><th></th></tr></thead>
+                <tbody id="selfCheckRows"></tbody>
+            </table>
+        </div>
+        <h3>二、跨表檢核</h3>
+        <div class="change-table-wrap">
+            <table class="check-table">
+                <thead><tr><th>代號</th><th>檢核項目</th><th>關係式</th><th>特殊月份</th><th>特殊公式</th><th></th></tr></thead>
+                <tbody id="crossCheckRows"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <dialog id="checkRangeDialog" class="check-range-dialog">
+        <form method="dialog">
+            <header><div><h2>展開項目代號範圍</h2><p id="checkRangeBaseFormula"></p></div><button value="cancel" aria-label="關閉">×</button></header>
+            <label>要產生的項目代號
+                <textarea id="checkRangeValues" placeholder="1100 1101 1200 1201 1300 1301&#10;1400 1401 1500 1501 1900 1901"></textarea>
+            </label>
+            <p class="muted">可使用空白、逗號、頓號或換行分隔。生成列會插入目前公式的下一列。</p>
+            <footer><button value="cancel">取消</button><button type="button" id="checkRangeGenerate">產生並插入</button></footer>
+        </form>
+    </dialog>
+</div>
+@section Scripts { <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="~/js/tools-check-formula.js" asp-append-version="true"></script> }

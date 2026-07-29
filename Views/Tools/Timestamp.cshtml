@@ -1,0 +1,5 @@
+@{ ViewData["Title"] = "時間戳轉換"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">TIME</span><h1>時間戳轉換</h1><p>Unix 秒／毫秒、ISO 8601、本地時間與 UTC 一次查看。</p></div></header>
+<div class="timestamp-now"><div><span>目前 Unix 秒</span><strong id="nowSeconds"></strong></div><div><span>目前 Unix 毫秒</span><strong id="nowMillis"></strong></div><button data-copy-target="#nowSeconds">複製秒數</button></div>
+<div class="form-card"><label>輸入時間戳或日期字串<input id="timestampInput" placeholder="例如 1784736000 或 2026-07-23T09:00:00+08:00" /></label><div class="toolbar"><button id="timestampConvert">轉換</button><button id="timestampNow">填入現在時間</button></div><div class="result-list" id="timestampResults"></div></div></div>
+@section Scripts { <script src="~/js/tools-timestamp.js" asp-append-version="true"></script> }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="DevPilot 開發者常用工具箱" />
+    <title>@ViewData["Title"] - DevPilot</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sql-sanitizer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/button-feedback.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sidebar-toggle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/data-converter.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/change-list.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/check-formula.css" asp-append-version="true" />
+    <style>[hidden] { display: none !important; }</style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" asp-controller="Home" asp-action="Index">
+                <span class="brand-mark">&lt;/&gt;</span>
+                <span><strong>DevPilot</strong><small>開發者工具箱</small></span>
+            </a>
+            <button class="nav-search" type="button" data-command-open><span>搜尋工具</span><kbd>Ctrl K</kbd></button>
+            <nav class="nav-groups">
+                <section><h2>資料與文字</h2>
+                    <a asp-controller="Tools" asp-action="Json">JSON 格式化</a>
+                    <a asp-controller="Tools" asp-action="Text">文字處理</a>
+                    <a asp-controller="Tools" asp-action="Diff">文字 Diff</a>
+                    <a asp-controller="Tools" asp-action="DataConverter">JSON／YAML／XML／CSV 互轉</a>
+                    <a asp-controller="Tools" asp-action="ChangeList">程式異動清單產生器</a>
+                    <a asp-controller="Tools" asp-action="CheckFormula">檢核公式 Excel 產生器</a>
+                </section>
+                <section><h2>開發工具</h2>
+                    <a asp-controller="Tools" asp-action="Jwt">JWT 解碼</a>
+                    <a asp-controller="Tools" asp-action="Regex">Regex 測試</a>
+                    <a asp-controller="Tools" asp-action="Timestamp">時間戳轉換</a>
+                    <a asp-controller="Tools" asp-action="Encoder">編碼與雜湊</a>
+                    <a asp-controller="Tools" asp-action="Generator">GUID 與密碼</a>
+                </section>
+                <section><h2>資料庫</h2>
+                    <a asp-controller="Tools" asp-action="SqlIn">SQL IN 產生器</a>
+                    <a asp-controller="Tools" asp-action="SqlSanitizer">SQL 欄位清理與比對</a>
+                    <a asp-controller="Tools" asp-action="SqlTestData">SQL 測試資料產生器</a>
+                </section>
+                <section><h2>其他</h2><a asp-controller="Tools" asp-action="LuckyWheel">幸運轉盤</a></section>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button>
+                <span>資料只在瀏覽器內處理</span>
+            </div>
+        </aside>
+        <div class="main-shell">
+            <header class="topbar">
+                <button class="menu-button" type="button" data-menu-toggle aria-label="收合或展開選單" aria-expanded="true">☰</button>
+                <div class="topbar-title">@ViewData["Title"]</div>
+                <div class="topbar-actions"><button class="icon-button" type="button" data-theme-toggle aria-label="切換主題">◐</button></div>
+            </header>
+            <main class="content">@RenderBody()</main>
+        </div>
+    </div>
+    <div class="command-backdrop" data-command-dialog hidden>
+        <div class="command-dialog" role="dialog" aria-modal="true" aria-label="搜尋工具">
+            <input type="search" placeholder="輸入 JSON、SQL、JWT、Diff…" data-command-input />
+            <div class="command-results" data-command-results></div>
+        </div>
+    </div>
+    <div class="toast" data-toast hidden></div>
+    <script src="~/js/zip-download.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,42 @@
+@{ ViewData["Title"] = "開發者工具箱"; }
+<section class="hero">
+    <div>
+        <span class="eyebrow">DEVELOPER WORKBENCH</span>
+        <h1>常用開發工具<br />集中在一個地方</h1>
+        <p>JSON、SQL、JWT、Regex、編碼與文字處理，所有資料都只在你的瀏覽器中運算。</p>
+        <div class="hero-actions">
+            <button class="primary-button" type="button" data-command-open>搜尋工具 <kbd>Ctrl K</kbd></button>
+            <a class="secondary-button" asp-controller="Tools" asp-action="Json">開啟 JSON 格式化</a>
+        </div>
+    </div>
+    <div class="hero-console" aria-label="DevPilot 功能示意">
+        <div class="console-bar"><i></i><i></i><i></i><span>devpilot.local</span></div>
+        <pre><code><span class="muted">// 資料不會離開你的瀏覽器</span>
+{
+  <span class="accent">"tool"</span>: <span class="success">"json-formatter"</span>,
+  <span class="accent">"privacy"</span>: <span class="success">"browser-only"</span>,
+  <span class="accent">"status"</span>: <span class="success">"ready"</span>
+}</code></pre>
+    </div>
+</section>
+
+<section class="section-heading">
+    <div><span class="eyebrow">QUICK ACCESS</span><h2>常用工具</h2></div>
+    <p>選擇工具後直接貼上內容即可使用，不需上傳檔案。</p>
+</section>
+<div class="tool-grid">
+    <a class="tool-card featured" asp-controller="Tools" asp-action="Json"><span class="tool-icon">{ }</span><div><h3>JSON 格式化</h3><p>格式化、壓縮並產生 C# Model。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="SqlIn"><span class="tool-icon">SQL</span><div><h3>SQL IN 產生器</h3><p>將多行資料轉成安全的 IN 條件。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="Jwt"><span class="tool-icon">JWT</span><div><h3>JWT 解碼</h3><p>查看 Header、Payload 與到期時間。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="Text"><span class="tool-icon">Aa</span><div><h3>文字處理</h3><p>排序、去重與命名格式轉換。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="Timestamp"><span class="tool-icon">⏱</span><div><h3>時間戳轉換</h3><p>Unix、ISO 與 UTC 時間互轉。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="Regex"><span class="tool-icon">.*</span><div><h3>Regex 測試</h3><p>即時查看符合項目與取代結果。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="Diff"><span class="tool-icon">±</span><div><h3>文字 Diff</h3><p>逐行比較兩份文字內容。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card" asp-controller="Tools" asp-action="Generator"><span class="tool-icon">#</span><div><h3>GUID 與密碼</h3><p>產生 GUID 和安全隨機密碼。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" asp-controller="Tools" asp-action="SqlSanitizer"><span class="tool-icon">⇄</span><div><h3>SQL 欄位清理</h3><p>移除 UID、統一稽核欄位並逐表比對。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" asp-controller="Tools" asp-action="SqlTestData"><span class="tool-icon">＋</span><div><h3>SQL 測試資料</h3><p>從 INSERT 範例自動產生多筆測試資料。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" asp-controller="Tools" asp-action="DataConverter"><span class="tool-icon">⇆</span><div><h3>資料格式互轉</h3><p>JSON、YAML、XML、CSV 雙向轉換。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" asp-controller="Tools" asp-action="ChangeList"><span class="tool-icon">XL</span><div><h3>程式異動清單</h3><p>從文字或圖片整理路徑並填入 Excel 範本。</p></div><span class="arrow">→</span></a>
+    <a class="tool-card featured" asp-controller="Tools" asp-action="CheckFormula"><span class="tool-icon">fx</span><div><h3>檢核公式 Excel</h3><p>貼上檢核規格，自動展開指定欄位公式並匯入樣板。</p></div><span class="arrow">→</span></a>
+</div>
+<section class="privacy-banner"><span>🔒</span><div><h3>Local-first 隱私設計</h3><p>貼上的資料只在瀏覽器內處理，不會傳送至伺服器。</p></div></section>

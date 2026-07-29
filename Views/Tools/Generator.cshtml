@@ -1,0 +1,5 @@
+@{ ViewData["Title"] = "GUID／密碼產生器"; }
+<div class="tool-page"><header class="page-heading"><div><span class="eyebrow">GENERATE</span><h1>GUID／密碼產生器</h1><p>使用瀏覽器 Crypto API 產生隨機識別碼與密碼。</p></div></header>
+<div class="generator-grid"><section class="form-card"><h2>GUID</h2><label>數量<input id="guidCount" type="number" min="1" max="100" value="5" /></label><label><input id="guidUpper" type="checkbox" /> 大寫</label><button id="guidGenerate">產生 GUID</button><textarea id="guidOutput" readonly></textarea><button data-copy-target="#guidOutput">複製</button></section>
+<section class="form-card"><h2>安全密碼</h2><label>長度<input id="passwordLength" type="number" min="8" max="128" value="20" /></label><label><input id="passwordSymbols" type="checkbox" checked /> 包含符號</label><label><input id="passwordAvoid" type="checkbox" checked /> 排除易混淆字元</label><button id="passwordGenerate">產生密碼</button><input id="passwordOutput" readonly /><button data-copy-target="#passwordOutput">複製</button></section></div></div>
+@section Scripts { <script src="~/js/tools-generator.js" asp-append-version="true"></script> }
