@@ -5,6 +5,7 @@
 .idea/
 *.user
 *.suo
+debug.log
 bin/
 obj/
 .tmp/

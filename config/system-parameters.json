@@ -1,12 +1,1 @@
-[
-  {
-    "system": "系統A",
-    "parameterId": "serverBase",
-    "parameterValue": "https://svn-a.example.com/Repository"
-  },
-  {
-    "system": "系統B",
-    "parameterId": "serverBase",
-    "parameterValue": "https://svn-b.example.com/Repository"
-  }
-]
+[]

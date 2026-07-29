@@ -42,6 +42,27 @@
     }
     return `${serverBase}/`;
   }
+  function importServerParameterFile(file) {
+    if (!file) return;
+    file.text().then(text => {
+      let parameters;
+      try {
+        parameters = JSON.parse(text);
+      } catch {
+        throw new Error('Server 參數檔不是有效的 JSON 格式');
+      }
+      if (!Array.isArray(parameters)) throw new Error('Server 參數檔必須是陣列格式');
+      const parameter = parameters.find(item =>
+        item && item.system === 'DevPilot' && item.parameterId === 'serverBase');
+      if (!parameter || typeof parameter.parameterValue !== 'string' || !parameter.parameterValue.trim()) {
+        throw new Error('找不到 system=DevPilot、parameterId=serverBase 的參數');
+      }
+      $('#changeServerBase').value = parameter.parameterValue.trim();
+      $('#changeListStatus').textContent = '已匯入 DevPilot 的 serverBase 參數';
+    }).catch(error => {
+      $('#changeListStatus').textContent = `匯入 Server 參數檔失敗：${error.message}`;
+    });
+  }
   function pathItem(path) {
     const trimmed = path.replace(/\/+$/, '');
     const parts = trimmed.split('/');
@@ -211,6 +232,9 @@
     } catch { $('#changeListStatus').textContent = '無法讀取檔案'; }
   }
   $('#changeListFile').addEventListener('change', event => loadFile(event.target.files[0]));
+  $('#changeServerParameterFile').addEventListener('change', event => {
+    importServerParameterFile(event.target.files[0]);
+  });
   document.addEventListener('paste', event => {
     const items = [...(event.clipboardData?.items || [])];
     const imageItem = items.find(item => item.kind === 'file' && item.type.startsWith('image/'));
