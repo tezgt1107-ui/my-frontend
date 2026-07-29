@@ -32,13 +32,15 @@
     return unique;
   }
   function inferServer(path) {
+    const serverBase = $('#changeServerBase')?.value.trim().replace(/\/+$/, '') || '';
+    if (!serverBase) return '';
     const segments = path.split('/').filter(Boolean);
     const environmentIndex = segments.findIndex(segment => /^(dev|uat|sit|prod|prd)$/i.test(segment));
     if (environmentIndex > 0) {
       const repository = segments.slice(0, environmentIndex).join('/');
-      return `svn://172.17.13.20:90/Repository/${repository}/UAT`;
+      return `${serverBase}/${repository}/UAT`;
     }
-    return 'svn://172.17.13.20:90/Repository/';
+    return `${serverBase}/`;
   }
   function pathItem(path) {
     const trimmed = path.replace(/\/+$/, '');

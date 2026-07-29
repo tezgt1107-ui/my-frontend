@@ -32,13 +32,15 @@
     return unique;
   }
   function inferServer(path) {
+    const serverBase = $('#changeServerBase')?.value.trim().replace(/\/+$/, '') || '';
+    if (!serverBase) return '';
     const segments = path.split('/').filter(Boolean);
     const environmentIndex = segments.findIndex(segment => /^(dev|uat|sit|prod|prd)$/i.test(segment));
     if (environmentIndex > 0) {
       const repository = segments.slice(0, environmentIndex).join('/');
-      return `svn://172.17.13.20:90/Repository/${repository}/UAT`;
+      return `${serverBase}/${repository}/UAT`;
     }
-    return 'svn://172.17.13.20:90/Repository/';
+    return `${serverBase}/`;
   }
   function pathItem(path) {
     const trimmed = path.replace(/\/+$/, '');
@@ -116,6 +118,17 @@
       items: state.items
     };
     try {
+      if (window.XLSX) {
+        const rows = [['程式異動清單'], ['人員', personName, '日期', payload.releaseDate || ''], ['部門', payload.department, '系統', payload.systemName], ['專案代碼', payload.projectCode, '版本', payload.version], [], ['#', 'Server', '檔案', '路徑', '備註'], ...state.items.map((item, index) => [index + 1, item.server, item.item, item.path, item.remark])];
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.aoa_to_sheet(rows);
+        worksheet['!cols'] = [{ wch: 8 }, { wch: 42 }, { wch: 32 }, { wch: 70 }, { wch: 14 }];
+        XLSX.utils.book_append_sheet(workbook, worksheet, '程式異動清單');
+        XLSX.writeFile(workbook, `程式異動清單_${Date.now()}.xlsx`);
+        $('#changeListStatus').textContent = `Excel 已產生，共 ${state.items.length} 筆`;
+        window.markActionComplete?.($('#changeListGenerate'));
+        return;
+      }
       $('#changeListStatus').textContent = '正在產生 Excel…';
       const response = await fetch('/api/change-list/generate', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
