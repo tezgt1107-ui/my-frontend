@@ -139,24 +139,22 @@
       items: state.items
     };
     try {
-      // The API fills Templates/程式異動清單.xlsx and preserves its layout.
       $('#changeListStatus').textContent = '正在產生 Excel…';
-      const response = await fetch('/api/change-list/generate', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      if (!window.XLSX) throw new Error('Excel 元件尚未載入，請重新整理頁面');
+      const templateUrl = document.body.dataset.changeTemplateUrl || $('.change-list-tool').dataset.changeTemplateUrl || '/Templates/程式異動清單.xlsx';
+      const response = await fetch(templateUrl);
+      if (!response.ok) throw new Error('找不到 Excel 範本');
+      const workbook = XLSX.read(await response.arrayBuffer(), { type: 'array', cellStyles: true });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const setValue = (address, value) => { sheet[address] = { ...(sheet[address] || {}), t: 's', v: value ?? '' }; };
+      setValue('B4', payload.releaseDate || ''); setValue('E4', payload.department);
+      setValue('B5', payload.systemName); setValue('E5', payload.projectCode); setValue('F3', payload.version);
+      state.items.forEach((item, index) => {
+        const row = 8 + index;
+        setValue(`A${row}`, index + 1); setValue(`B${row}`, item.server);
+        setValue(`C${row}`, item.item); setValue(`D${row}`, item.path); setValue(`F${row}`, item.remark);
       });
-      if (!response.ok) {
-        const error = await response.json().catch(() => null);
-        throw new Error(error?.message || `伺服器回應 ${response.status}`);
-      }
-      const blob = await response.blob();
-      const disposition = response.headers.get('Content-Disposition') || '';
-      const encodedName = disposition.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
-      const fileName = encodedName ? decodeURIComponent(encodedName) : `程式異動清單_${Date.now()}.xlsx`;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url; link.download = fileName;
-      document.body.appendChild(link); link.click(); link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      XLSX.writeFile(workbook, `程式異動清單_${Date.now()}.xlsx`);
       $('#changeListStatus').textContent = `Excel 產生完成：${state.items.length} 筆異動，填表人 ${personName}`;
       window.markActionComplete?.($('#changeListGenerate'));
     } catch (error) {

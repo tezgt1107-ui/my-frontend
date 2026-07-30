@@ -134,61 +134,20 @@
       items: state.items
     };
     try {
-      if (window.XLSX) {
-        const template = await fetch('../../Templates/程式異動清單.xlsx').then(response => {
-          if (!response.ok) throw new Error('找不到 Excel 範本');
-          return response.arrayBuffer();
-        });
-        const workbook = XLSX.read(template, { type: 'array', cellStyles: true });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const setValue = (cell, value) => { worksheet[cell] = { ...(worksheet[cell] || {}), v: value, t: 's' }; };
-        setValue('B4', payload.releaseDate || '');
-        setValue('E4', payload.department);
-        setValue('B5', payload.systemName);
-        setValue('E5', payload.projectCode);
-        setValue('F3', payload.version);
-        state.items.forEach((item, index) => {
-          const row = 8 + index;
-          setValue(`A${row}`, index + 1);
-          setValue(`B${row}`, item.server);
-          setValue(`C${row}`, item.item);
-          setValue(`D${row}`, item.path);
-          setValue(`F${row}`, item.remark);
-        });
-        XLSX.writeFile(workbook, `程式異動清單_${Date.now()}.xlsx`);
-        $('#changeListStatus').textContent = `Excel 已產生，共 ${state.items.length} 筆`;
-        window.markActionComplete?.($('#changeListGenerate'));
-        return;
-      }
-        const rows = [['程式異動清單'], ['人員', personName, '日期', payload.releaseDate || ''], ['部門', payload.department, '系統', payload.systemName], ['專案代碼', payload.projectCode, '版本', payload.version], [], ['#', 'Server', '檔案', '路徑', '備註'], ...state.items.map((item, index) => [index + 1, item.server, item.item, item.path, item.remark])];
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.aoa_to_sheet(rows);
-        worksheet['!cols'] = [{ wch: 8 }, { wch: 42 }, { wch: 32 }, { wch: 70 }, { wch: 14 }];
-        XLSX.utils.book_append_sheet(workbook, worksheet, '程式異動清單');
-        XLSX.writeFile(workbook, `程式異動清單_${Date.now()}.xlsx`);
-        $('#changeListStatus').textContent = `Excel 已產生，共 ${state.items.length} 筆`;
-        window.markActionComplete?.($('#changeListGenerate'));
-        return;
-      }
       $('#changeListStatus').textContent = '正在產生 Excel…';
-      const response = await fetch('/api/change-list/generate', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-      });
-      if (!response.ok) {
-        const error = await response.json().catch(() => null);
-        throw new Error(error?.message || `伺服器回應 ${response.status}`);
-      }
-      const blob = await response.blob();
-      const disposition = response.headers.get('Content-Disposition') || '';
-      const encodedName = disposition.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
-      const fileName = encodedName ? decodeURIComponent(encodedName) : `程式異動清單_${Date.now()}.xlsx`;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url; link.download = fileName;
-      document.body.appendChild(link); link.click(); link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      $('#changeListStatus').textContent = `Excel 產生完成：${state.items.length} 筆異動，填表人 ${personName}`;
+      if (!window.XLSX) throw new Error('Excel 元件尚未載入，請重新整理頁面');
+      const response = await fetch(document.body.dataset.changeTemplateUrl || '../../Templates/程式異動清單.xlsx');
+      if (!response.ok) throw new Error('找不到 Excel 範本');
+      const workbook = XLSX.read(await response.arrayBuffer(), { type: 'array', cellStyles: true });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const setValue = (address, value) => { sheet[address] = { ...(sheet[address] || {}), t: 's', v: value ?? '' }; };
+      setValue('B4', payload.releaseDate || ''); setValue('E4', payload.department);
+      setValue('B5', payload.systemName); setValue('E5', payload.projectCode); setValue('F3', payload.version);
+      state.items.forEach((item, index) => { const row = 8 + index; setValue(`A${row}`, index + 1); setValue(`B${row}`, item.server); setValue(`C${row}`, item.item); setValue(`D${row}`, item.path); setValue(`F${row}`, item.remark); });
+      XLSX.writeFile(workbook, `程式異動清單_${Date.now()}.xlsx`);
+      $('#changeListStatus').textContent = `Excel 已產生，共 ${state.items.length} 筆`;
       window.markActionComplete?.($('#changeListGenerate'));
+      return;
     } catch (error) {
       $('#changeListStatus').textContent = `Excel 產生失敗：${error.message}`;
     }

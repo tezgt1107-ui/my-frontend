@@ -1,5 +1,5 @@
 @{ ViewData["Title"] = "程式異動清單產生器"; }
-<div class="tool-page change-list-tool">
+<div class="tool-page change-list-tool" data-change-template-url="/Templates/程式異動清單.xlsx">
     <header class="page-heading">
         <div>
             <span class="eyebrow">EXCEL</span>
@@ -60,5 +60,6 @@
 </div>
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="~/js/tools-change-list.js" asp-append-version="true"></script>
 }
