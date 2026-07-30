@@ -42,6 +42,22 @@
     }
     return `${serverBase}/`;
   }
+  async function importServerParameterFile(file) {
+    if (!file) return;
+    try {
+      const parameters = JSON.parse(await file.text());
+      const parameter = Array.isArray(parameters)
+        ? parameters.find(item => item && item.system === 'DevPilot' && item.parameterId === 'serverBase')
+        : null;
+      if (!parameter || typeof parameter.parameterValue !== 'string' || !parameter.parameterValue.trim()) {
+        throw new Error('找不到 DevPilot/serverBase 設定');
+      }
+      $('#changeServerBase').value = parameter.parameterValue.trim();
+      $('#changeListStatus').textContent = `已讀取 Server 設定：${file.name}`;
+    } catch (error) {
+      $('#changeListStatus').textContent = `Server JSON 讀取失敗：${error.message}`;
+    }
+  }
   function pathItem(path) {
     const trimmed = path.replace(/\/+$/, '');
     const parts = trimmed.split('/');
@@ -211,6 +227,7 @@
     } catch { $('#changeListStatus').textContent = '無法讀取檔案'; }
   }
   $('#changeListFile').addEventListener('change', event => loadFile(event.target.files[0]));
+  $('#changeServerParameterFile').addEventListener('change', event => importServerParameterFile(event.target.files[0]));
   document.addEventListener('paste', event => {
     const items = [...(event.clipboardData?.items || [])];
     const imageItem = items.find(item => item.kind === 'file' && item.type.startsWith('image/'));
