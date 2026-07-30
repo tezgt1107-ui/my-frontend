@@ -42,6 +42,7 @@ public sealed class ChangeListController(IWebHostEnvironment environment) : Cont
         var document = ReadXml(archive, "xl/worksheets/sheet1.xml");
         var sheetData = document.Root!.Element(Spreadsheet + "sheetData")!;
         var rows = sheetData.Elements(Spreadsheet + "row").ToList();
+        var detailTemplate = new XElement(rows.Single(row => (int?)row.Attribute("r") == 10));
         var footerTemplate = new XElement(rows.Single(row => (int?)row.Attribute("r") == 22));
         var trailingTemplate = new XElement(rows.Single(row => (int?)row.Attribute("r") == 23));
         rows.Where(row =>
@@ -54,7 +55,7 @@ public sealed class ChangeListController(IWebHostEnvironment environment) : Cont
         foreach (var (item, index) in request.Items.Select((item, index) => (item, index)))
         {
             var rowNumber = 8 + index;
-            var row = CreateDetailRow(rowNumber, index + 1, item);
+            var row = CreateDetailRow(rowNumber, index + 1, item, detailTemplate);
             insertAfter.AddAfterSelf(row);
             insertAfter = row;
         }
@@ -68,10 +69,10 @@ public sealed class ChangeListController(IWebHostEnvironment environment) : Cont
         ShiftRow(trailingTemplate, footerRowNumber + 1);
         footerTemplate.AddAfterSelf(trailingTemplate);
 
-        SetInlineText(sheetData, "B4", request.ReleaseDate?.ToString("yyyy/MM/dd") ?? DateTime.Today.ToString("yyyy/MM/dd"), "24");
-        SetInlineText(sheetData, "E4", request.Department, "26");
-        SetInlineText(sheetData, "B5", request.SystemName, "28");
-        SetInlineText(sheetData, "E5", request.ProjectCode, "28");
+        SetInlineText(sheetData, "B4", request.ReleaseDate?.ToString("yyyy/MM/dd") ?? DateTime.Today.ToString("yyyy/MM/dd"), "18");
+        SetInlineText(sheetData, "E4", request.Department, "20");
+        SetInlineText(sheetData, "B5", request.SystemName, "22");
+        SetInlineText(sheetData, "E5", request.ProjectCode, "22");
         SetInlineText(sheetData, "F3", request.Version, "8");
 
         var dimension = document.Root.Element(Spreadsheet + "dimension");
@@ -80,20 +81,29 @@ public sealed class ChangeListController(IWebHostEnvironment environment) : Cont
         WriteXml(archive, "xl/worksheets/sheet1.xml", document);
     }
 
-    private static XElement CreateDetailRow(int rowNumber, int sequence, ChangeListItem item) =>
-        new(Spreadsheet + "row",
-            new XAttribute("r", rowNumber),
-            new XAttribute("spans", "1:6"),
-            NumberCell($"A{rowNumber}", sequence, "7"),
-            TextCell($"B{rowNumber}", item.Server, "9"),
-            TextCell($"C{rowNumber}", item.Item, "14"),
-            TextCell($"D{rowNumber}", item.Path, "21"),
-            new XElement(Spreadsheet + "c", new XAttribute("r", $"E{rowNumber}"), new XAttribute("s", "22")),
-            TextCell($"F{rowNumber}", item.Remark, "10"));
+    private static XElement CreateDetailRow(int rowNumber, int sequence, ChangeListItem item, XElement template)
+    {
+        var row = new XElement(template);
+        ShiftRow(row, rowNumber);
+        SetNumber(row, $"A{rowNumber}", sequence);
+        SetInlineText(row, $"B{rowNumber}", item.Server, "9");
+        SetInlineText(row, $"C{rowNumber}", item.Item, "14");
+        SetInlineText(row, $"D{rowNumber}", item.Path, "15");
+        SetInlineText(row, $"F{rowNumber}", item.Remark, "10");
+        return row;
+    }
 
     private static XElement NumberCell(string reference, int value, string style) =>
         new(Spreadsheet + "c", new XAttribute("r", reference), new XAttribute("s", style),
             new XElement(Spreadsheet + "v", value));
+
+    private static void SetNumber(XContainer container, string reference, int value)
+    {
+        var cell = container.Descendants(Spreadsheet + "c").First(item => (string?)item.Attribute("r") == reference);
+        cell.Attribute("t")?.Remove();
+        cell.Elements(Spreadsheet + "v").Remove();
+        cell.Add(new XElement(Spreadsheet + "v", value));
+    }
 
     private static XElement TextCell(string reference, string value, string style) =>
         new(Spreadsheet + "c",
@@ -106,7 +116,8 @@ public sealed class ChangeListController(IWebHostEnvironment environment) : Cont
         var cell = container.Descendants(Spreadsheet + "c").FirstOrDefault(item => (string?)item.Attribute("r") == reference);
         if (cell is not null)
         {
-            cell.ReplaceWith(TextCell(reference, value, style));
+            var existingStyle = (string?)cell.Attribute("s") ?? style;
+            cell.ReplaceWith(TextCell(reference, value, existingStyle));
             return;
         }
         var rowNumber = int.Parse(new string(reference.SkipWhile(char.IsLetter).ToArray()));
