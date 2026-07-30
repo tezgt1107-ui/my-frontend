@@ -135,16 +135,21 @@
     };
     try {
       $('#changeListStatus').textContent = '正在產生 Excel…';
-      if (!window.XLSX) throw new Error('Excel 元件尚未載入，請重新整理頁面');
+      if (!window.ExcelJS) throw new Error('Excel 元件尚未載入，請重新整理頁面');
       const response = await fetch(document.body.dataset.changeTemplateUrl || '../../Templates/程式異動清單.xlsx');
       if (!response.ok) throw new Error('找不到 Excel 範本');
-      const workbook = XLSX.read(await response.arrayBuffer(), { type: 'array', cellStyles: true });
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const setValue = (address, value) => { sheet[address] = { ...(sheet[address] || {}), t: 's', v: value ?? '' }; };
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(await response.arrayBuffer());
+      const sheet = workbook.worksheets[0];
+      const setValue = (address, value) => { sheet.getCell(address).value = value ?? ''; };
       setValue('B4', payload.releaseDate || ''); setValue('E4', payload.department);
       setValue('B5', payload.systemName); setValue('E5', payload.projectCode); setValue('F3', payload.version);
       state.items.forEach((item, index) => { const row = 8 + index; setValue(`A${row}`, index + 1); setValue(`B${row}`, item.server); setValue(`C${row}`, item.item); setValue(`D${row}`, item.path); setValue(`F${row}`, item.remark); });
-      XLSX.writeFile(workbook, `程式異動清單_${Date.now()}.xlsx`);
+      const output = await workbook.xlsx.writeBuffer();
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(new Blob([output], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+      link.download = `程式異動清單_${Date.now()}.xlsx`;
+      document.body.appendChild(link); link.click(); link.remove();
       $('#changeListStatus').textContent = `Excel 已產生，共 ${state.items.length} 筆`;
       window.markActionComplete?.($('#changeListGenerate'));
       return;
