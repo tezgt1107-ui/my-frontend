@@ -152,6 +152,12 @@
       setValue('B5', payload.systemName); setValue('E5', payload.projectCode); setValue('F3', payload.version);
       state.items.forEach((item, index) => {
         const row = 8 + index;
+        const targetRow = sheet.getRow(row);
+        const detailTemplate = sheet.getRow(10);
+        targetRow.height = detailTemplate.height;
+        for (let column = 1; column <= 6; column++) {
+          targetRow.getCell(column).style = { ...detailTemplate.getCell(column).style };
+        }
         setValue(`A${row}`, index + 1); setValue(`B${row}`, item.server);
         setValue(`C${row}`, item.item); setValue(`D${row}`, item.path); setValue(`F${row}`, item.remark);
       });

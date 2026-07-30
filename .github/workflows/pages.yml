@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Sync browser tool scripts
+        shell: pwsh
+        run: Copy-Item -LiteralPath 'wwwroot/js/tools-change-list.js' -Destination 'docs/js/tools-change-list.js' -Force
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
